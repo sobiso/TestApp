@@ -19,12 +19,10 @@ function* workerSaga(action) {
         const response = yield call(fetchRepos, action.search);
         const data = response.data.items
         yield put({ type: GET_REPOS_SUCCESS, data });
-        
     } catch (error) {
         yield put({ type: GET_REPOS_ERROR, error });
     }
 }
-
 
 export  function* watcherSaga() {
   yield takeLatest(GET_REPOS, workerSaga);

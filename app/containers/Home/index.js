@@ -7,7 +7,7 @@
 import React from 'react';
 import {Platform, StyleSheet, Text, ActivityIndicator, View, ScrollView, FlatList} from 'react-native';
 import { connect } from 'react-redux';
-import { listRepos, removeItem } from './../../reducer' 
+import { listRepos, removeItem } from './../../redux/repos'
 import { Container, Header, Spinner,  Item, Input, Icon, Button, Footer } from 'native-base';
 import {RepoItem} from '../../components/RepoItem'
 
@@ -15,14 +15,9 @@ import {RepoItem} from '../../components/RepoItem'
 
   state = {
     selected: (new Map(): Map<string, boolean>),
-    searchError: false
+    searchError: false,
+    searchText:''
   };
-
-  componentDidMount() {
-    console.log('getting repos')
-
-    // this.props.listRepos('react')
-  }
 
   _onCheckItem = (id: string) => {
     this.setState((state) => {
@@ -33,7 +28,7 @@ import {RepoItem} from '../../components/RepoItem'
   };
 
   _onTrash = (id) => {
-    this.props.removeItem(id)
+    this.props.remove(id)
   }
 
   countStars() {
@@ -53,10 +48,10 @@ import {RepoItem} from '../../components/RepoItem'
       this.setState({searchError: true})
       return
     } else {
-      this.setState({searchError: false})
+      this.setState({searchError: false, searchText: text})
     }
 
-    this.props.listRepos(text)
+    this.props.loadRepos(text)
     
   }
 
@@ -77,6 +72,7 @@ import {RepoItem} from '../../components/RepoItem'
               placeholder="Search" 
               onChangeText={(text) => this.handleSearch(text)}  
               autoCapitalize = 'none'
+              value={this.state.searchText}
             />
           <ActivityIndicator size="large" color="#0000ff" animating={repos.loading}/>
           </Item>
@@ -109,7 +105,7 @@ import {RepoItem} from '../../components/RepoItem'
         </ScrollView>
         <Footer>
           <Item>
-            <Button info onPress={() => this.handleMoveToList()}>
+            <Button info onPress={() => this.handleMoveToList()} style={{height:40, marginTop:5}}>
               <Text> NEXT </Text>
             </Button>
           </Item>
@@ -124,18 +120,24 @@ import {RepoItem} from '../../components/RepoItem'
 }
 
 const mapStateToProps = state => {
-  console.log('home: ',state)
   return({
-  repos: state.get('repos').toJS()
+    repos: state.repos.toJS()
 })}
 
-const mapDispatchToProps = {
-  listRepos,
-  removeItem,
-};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadRepos: (text) => {
+      dispatch(listRepos(text))
+    },
+    remove: (id) => {
+      dispatch(removeItem(id))
+    },
+    dispatch,
+  };
+}
 
 const styles = StyleSheet.create({
-
   bottomBar: {
     borderWidth: 1,
     borderColor: 'black',

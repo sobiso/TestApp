@@ -7,14 +7,11 @@
 import React from 'react';
 import {Platform, StyleSheet, Text, Image, View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
-import { listRepos, removeItem } from './../../reducer' 
 import { Container} from 'native-base';
-
 
  class List extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   _onPressItem = (url) => {
-    console.log(url)
     this.props.navigation.navigate('Web', {url: url})
   };
 
@@ -25,7 +22,6 @@ import { Container} from 'native-base';
         <Image source={{uri: item.owner.avatar_url}} style={styles.itemimage}/>
         <Text style={styles.itemname}>{item.owner.login}</Text> 
         <Text style={styles.itemname}>{item.name}</Text> 
-      
       </TouchableOpacity>
     )
   }
@@ -33,12 +29,10 @@ import { Container} from 'native-base';
   render() {
     const { repos } = this.props
     const { selected } = this.props.navigation.state.params
-
     const data = repos.data.filter(r => selected.get(r.id))
 
     return (
       <Container>
-
         <ScrollView>
           <FlatList
             data={data}
@@ -47,23 +41,19 @@ import { Container} from 'native-base';
             renderItem={({item: item}) => this.renderItem(item)}
           />
         </ScrollView>
-
-
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  repos: state.get('repos').toJS()
+  repos: state.repos.toJS()
 })
 
 const mapDispatchToProps = {
-
 };
 
 const styles = StyleSheet.create({
-
   itemcontainer: {
     flex: 1,
     width: '100%',

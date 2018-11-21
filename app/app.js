@@ -7,36 +7,31 @@
  */
 
 import React, {Component} from 'react';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from "redux-saga";
 import { persistStore, persistCombineReducers, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
-import { PersistGate } from 'redux-persist/integration/react'
-
 import Navigator from './navigator'
-import reducer from './reducer';
 import { watcherSaga } from "./saga";
+import repos from './redux/repos'
 
 const persistConfig = {
-  key: 'primary',
-  storage,
+  key: 'root',
+  storage
 }
-
-// const persistedReducer = persistReducer(persistConfig, reducer)
-// const persistedReducer = persistReducer(persistConfig, reducer)
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
-// const store = createStore(persistedReducer, applyMiddleware(sagaMiddleware));
-// let persistor = persistStore(
-//   store,
-//   null,
-//   () => {
-//     store.getState() // if you want to get restoredState
-//   }
-// )
+const reducer = persistCombineReducers(persistConfig, { repos })
+const store = createStore(reducer, applyMiddleware(sagaMiddleware))
+persistStore(
+  store,
+  null,
+  () => {
+    store.getState() 
+  }
+)
 
 sagaMiddleware.run(watcherSaga);
 
@@ -44,9 +39,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        {/* <PersistGate loading={null} persistor={persistor}> */}
-          <Navigator />
-        {/* </PersistGate> */}
+        <Navigator />
       </Provider>
     );
   }
