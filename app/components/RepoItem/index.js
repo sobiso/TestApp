@@ -16,8 +16,8 @@ export class RepoItem extends React.Component {
   }
 
 
-  _onPress = () => {
-    this.props.onPressItem(this.props.id);
+  _onCheck = () => {
+    this.props.onCheckItem(this.props.id);
   };
 
   _onTrash = () => {
@@ -30,7 +30,7 @@ export class RepoItem extends React.Component {
     return (
 
       <View style={styles.container} >
-        <CheckBox onPress={this._onPress} checked={this.props.selected} />
+        <CheckBox onPress={this._onCheck} checked={this.props.selected} />
         <Image source={{uri: owner.avatar_url}} style={styles.image}/>
         <Text style={styles.name}>{owner.login}</Text> 
         <Text style={styles.stars}>Stars {stars}</Text>

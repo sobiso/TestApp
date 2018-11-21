@@ -22,15 +22,15 @@ export default function reducer(state = initialState, action) {
         .setIn(['repos','error'], false)
         .setIn(['repos','data'], []);
     case GET_REPOS_SUCCESS:
-        return state
-            .setIn(['repos','loading'], false)
-            .setIn(['repos','error'], false)
-            .setIn(['repos','data'], (action.payload.data || {}).items);
+      return state
+          .setIn(['repos','loading'], false)
+          .setIn(['repos','error'], false)
+          .setIn(['repos','data'], action.data);
     case GET_REPOS_ERROR:
-        return state
-            .setIn(['repos','error'], 'Error while fetching repositories')
-            .setIn(['repos','loading'], false)
-            .setIn(['repos','data'], []);
+      return state
+          .setIn(['repos','error'], 'Error while fetching repositories')
+          .setIn(['repos','loading'], false)
+          .setIn(['repos','data'], []);
     case REMOVE_ITEM:
         return state
             .setIn(['repos','data'], state.getIn(['repos', 'data']).filter(i => i.id != action.payload.id))
@@ -40,15 +40,11 @@ export default function reducer(state = initialState, action) {
 }
 
 export function listRepos(search) {
-    return {
-      type: GET_REPOS,
-      payload: {
-        request: {
-          url: `search/repositories?q=${search}&sort=created&order=desc`
-        }
-      }
-    };
-  }
+      return {
+        type: GET_REPOS,
+        search
+      };
+    }
 
 export function removeItem(id) {
 
