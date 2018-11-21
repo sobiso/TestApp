@@ -58,14 +58,9 @@ import {RepoItem} from '../../components/RepoItem'
 
     this.props.listRepos(text)
     
-
   }
 
   handleMoveToList = () => {
-    console.log('move to list')
-    
-    console.log(this.state.selected)
-
     this.props.navigation.navigate('List', {selected: this.state.selected})
   }
 
@@ -75,9 +70,7 @@ import {RepoItem} from '../../components/RepoItem'
 
     return (
       <Container>
-
         <View >
-          
           <Item >
             <Icon name="ios-search" />
             <Input 
@@ -90,6 +83,10 @@ import {RepoItem} from '../../components/RepoItem'
           {this.state.searchError && (<Item>
             <Text>Don't use capital letters </Text>
           </Item>)}
+          {repos.error && (<Item>
+            <Text>{repos.error}</Text>
+          </Item>)}
+
         </View>
         <ScrollView>
           <FlatList
@@ -101,6 +98,7 @@ import {RepoItem} from '../../components/RepoItem'
                 key={item.id}
                 id={item.id}
                 owner={item.owner}
+                name={item.name}
                 stars={item.stargazers_count}
                 onCheckItem={this._onCheckItem}
                 onTrash={this._onTrash}
@@ -111,13 +109,12 @@ import {RepoItem} from '../../components/RepoItem'
         </ScrollView>
         <Footer>
           <Item>
-            <Button bordered info onPress={() => this.handleMoveToList()}>
-              <Text> Light </Text>
+            <Button info onPress={() => this.handleMoveToList()}>
+              <Text> NEXT </Text>
             </Button>
           </Item>
           <Item>
-          <Text style={styles.totalStars}> Total Stars: {this.countStars()}</Text>
-
+            <Text style={styles.totalStars}> Total Stars: {this.countStars()}</Text>
           </Item>
         </Footer>
 
@@ -127,7 +124,7 @@ import {RepoItem} from '../../components/RepoItem'
 }
 
 const mapStateToProps = state => {
-
+  console.log('home: ',state)
   return({
   repos: state.get('repos').toJS()
 })}

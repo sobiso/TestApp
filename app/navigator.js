@@ -4,10 +4,12 @@ import { StackNavigator, addNavigationHelpers } from 'react-navigation'
 import { View, Text } from "react-native";
 import Home  from './containers/Home'
 import List  from './containers/List'
+import Web  from './containers/Web'
 
 export const Navigator =  new StackNavigator({
   Home: { screen: Home },
   List: { screen: List },
+  Web: { screen: Web },
 },{
   initialRouteName: 'Home',
 })

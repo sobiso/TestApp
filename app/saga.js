@@ -18,7 +18,6 @@ function* workerSaga(action) {
     try {
         const response = yield call(fetchRepos, action.search);
         const data = response.data.items
-        
         yield put({ type: GET_REPOS_SUCCESS, data });
         
     } catch (error) {

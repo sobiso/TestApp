@@ -15,6 +15,7 @@ const initialState = fromJS({
   });
 
 export default function reducer(state = initialState, action) {
+  console.log(state)
   switch (action.type) {
     case GET_REPOS:
       return state 

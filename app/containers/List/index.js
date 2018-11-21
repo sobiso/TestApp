@@ -5,42 +5,28 @@
  */
 
 import React from 'react';
-import {Platform, StyleSheet, Text, Image, View, ScrollView, FlatList} from 'react-native';
+import {Platform, StyleSheet, Text, Image, View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import { listRepos, removeItem } from './../../reducer' 
-import { Container, Header, Spinner,  Item, Input, Icon, Button, Footer } from 'native-base';
-import {RepoItem} from '../../components/RepoItem'
+import { Container} from 'native-base';
 
- class Home extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
-  state = {
-    selected: (new Map(): Map<string, boolean>),
-    searchError: false
-  };
+ class List extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
-  componentDidMount() {
-    console.log('getting repos')
-
-    // this.props.listRepos('react')
-  }
-
-  _onPressItem = (id: string) => {
-    this.setState((state) => {
-      const selected = new Map(state.selected);
-      selected.set(id, !selected.get(id)); // toggle
-      return {selected};
-    });
+  _onPressItem = (url) => {
+    console.log(url)
+    this.props.navigation.navigate('Web', {url: url})
   };
 
   renderItem = (item) => {
 
     return (
-      <View style={styles.container} >
-      <Image source={{uri: item.owner.avatar_url}} style={styles.image}/>
-      <Text style={styles.name}>{item.owner.login}</Text> 
-
-
-    </View>
+      <TouchableOpacity onPress={() => this._onPressItem(item.html_url)} style={styles.itemcontainer}>
+        <Image source={{uri: item.owner.avatar_url}} style={styles.itemimage}/>
+        <Text style={styles.itemname}>{item.owner.login}</Text> 
+        <Text style={styles.itemname}>{item.name}</Text> 
+      
+      </TouchableOpacity>
     )
   }
 
@@ -49,7 +35,6 @@ import {RepoItem} from '../../components/RepoItem'
     const { selected } = this.props.navigation.state.params
 
     const data = repos.data.filter(r => selected.get(r.id))
-
 
     return (
       <Container>
@@ -74,12 +59,34 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  listRepos,
-  removeItem,
+
 };
 
 const styles = StyleSheet.create({
 
+  itemcontainer: {
+    flex: 1,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 10,
+    paddingBottom: 5,
+    paddingTop: 5,
+  },
+  itemimage: {
+      width: 50,
+      height: 50,
+      marginLeft: 30,
+  },
+  itemname: {
+    marginLeft: 10,
+    width: 100,
+  },
+  itemstars: {
+    marginLeft: 10,
+    width:100
+  },
+  
   bottomBar: {
     borderWidth: 1,
     borderColor: 'black',
@@ -87,5 +94,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps) (Home);
+export default connect(mapStateToProps, mapDispatchToProps) (List);
 
