@@ -4,17 +4,27 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Image
+  Image,
+  Animated
 } from 'react-native';
 
 import { CheckBox, Button, Icon } from 'native-base';
+
+const ANIMATION_DURATION = 250;
 
 export class RepoItem extends React.Component {
 
   constructor(props) {
     super(props);
+    this._animated = new Animated.Value(0);
   }
 
+  componentDidMount() {
+    Animated.timing(this._animated, {
+      toValue: 1,
+      duration: ANIMATION_DURATION,
+    }).start();
+  }
 
   _onCheck = () => {
     this.props.onCheckItem(this.props.id);
@@ -29,7 +39,25 @@ export class RepoItem extends React.Component {
     const { owner, stars, name } = this.props
     return (
 
-      <View style={styles.container} >
+      <Animated.View style={{ 
+        flex: 1,
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5,
+        opacity: this._animated ,
+        transform: [
+          { scale: this._animated },
+          {
+            rotate: this._animated.interpolate({
+              inputRange: [0, 1],
+              outputRange: ['35deg', '0deg'],
+              extrapolate: 'clamp',
+            })
+          }
+        ],
+        
+      }} >
         <CheckBox onPress={this._onCheck} checked={this.props.selected} />
         <Image source={{uri: owner.avatar_url}} style={styles.image}/>
         <View>
@@ -41,7 +69,7 @@ export class RepoItem extends React.Component {
         <Button onPress={this._onTrash}>
           <Icon name="ios-trash" />
         </Button>
-      </View>
+      </Animated.View>
     )
   }
 }

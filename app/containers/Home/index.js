@@ -11,7 +11,8 @@ import { listRepos, removeItem } from './../../redux/repos'
 import { Container, Header, Spinner,  Item, Input, Icon, Button, Footer } from 'native-base';
 import {RepoItem} from '../../components/RepoItem'
 
- class Home extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+class Home extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   state = {
     selected: (new Map(): Map<string, boolean>),
