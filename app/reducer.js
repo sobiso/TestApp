@@ -3,24 +3,36 @@ import {
     GET_REPOS_SUCCESS,
     GET_REPOS_ERROR
 } from './constants'
+import { fromJS } from 'immutable';
 
-export default function reducer(state = { repos: [] }, action) {
+const initialState = fromJS({
+    repos: {
+      loading: false,
+      error: false,
+      data : []
+    },
+    user: {
+        loading: false,
+    }
+  });
+
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_REPOS:
-      return { 
-          ...state, 
-          loading: true };
+      return state 
+        .setIn(['repos','loading'], true)
+        .setIn(['repos','error'], false)
+        .setIn(['repos','data'], []);
     case GET_REPOS_SUCCESS:
-      return { 
-          ...state,
-          loading: false,
-          repos: action.payload.data };
+        return state
+            .setIn(['repos','loading'], false)
+            .setIn(['repos','error'], false)
+            .setIn(['repos','data'], (action.payload.data || {}).items);
     case GET_REPOS_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: 'Error while fetching repositories'
-      };
+        return state
+            .setIn(['repos','error'], 'Error while fetching repositories')
+            .setIn(['repos','loading'], false)
+            .setIn(['repos','data'], []);
     default:
       return state;
   }

@@ -25,7 +25,6 @@ const store = createStore(reducer, applyMiddleware(axiosMiddleware(client)));
 
 export default class App extends Component {
   render() {
-    console.log(store)
     return (
       <Provider store={store}>
         <Navigator />
