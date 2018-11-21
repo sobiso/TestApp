@@ -1,7 +1,8 @@
 import {
     GET_REPOS,
     GET_REPOS_SUCCESS,
-    GET_REPOS_ERROR
+    GET_REPOS_ERROR,
+    REMOVE_ITEM
 } from './constants'
 import { fromJS } from 'immutable';
 
@@ -11,9 +12,6 @@ const initialState = fromJS({
       error: false,
       data : []
     },
-    user: {
-        loading: false,
-    }
   });
 
 export default function reducer(state = initialState, action) {
@@ -33,6 +31,9 @@ export default function reducer(state = initialState, action) {
             .setIn(['repos','error'], 'Error while fetching repositories')
             .setIn(['repos','loading'], false)
             .setIn(['repos','data'], []);
+    case REMOVE_ITEM:
+        return state
+            .setIn(['repos','data'], state.getIn(['repos', 'data']).filter(i => i.id != action.payload.id))
     default:
       return state;
   }
@@ -48,3 +49,13 @@ export function listRepos(search) {
       }
     };
   }
+
+export function removeItem(id) {
+
+    return {
+        type: REMOVE_ITEM,
+        payload: {
+            id
+        }
+    }
+}

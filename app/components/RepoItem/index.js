@@ -7,7 +7,7 @@ import {
   Image
 } from 'react-native';
 
-import { CheckBox } from 'native-base';
+import { CheckBox, Button, Icon } from 'native-base';
 
 export class RepoItem extends React.Component {
 
@@ -20,6 +20,10 @@ export class RepoItem extends React.Component {
     this.props.onPressItem(this.props.id);
   };
 
+  _onTrash = () => {
+    this.props.onTrash(this.props.id);
+  }
+
   render() {
 
     const { owner, stars } = this.props
@@ -30,6 +34,9 @@ export class RepoItem extends React.Component {
         <Image source={{uri: owner.avatar_url}} style={styles.image}/>
         <Text style={styles.name}>{owner.login}</Text> 
         <Text style={styles.stars}>Stars {stars}</Text>
+        <Button onPress={this._onTrash}>
+          <Icon name="ios-trash" />
+        </Button>
       </View>
     )
   }
