@@ -1,6 +1,6 @@
 /**
  *
- * Home
+ * List
  *
  */
 
@@ -9,7 +9,7 @@ import {Platform, StyleSheet, Text, Image, View, ScrollView, FlatList, Touchable
 import { connect } from 'react-redux';
 import { Container} from 'native-base';
 
- class List extends React.Component { // eslint-disable-line react/prefer-stateless-function
+ class List extends React.Component { 
 
   _onPressItem = (url) => {
     this.props.navigation.navigate('Web', {url: url})

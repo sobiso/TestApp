@@ -11,7 +11,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from "redux-saga";
 import { persistStore, persistCombineReducers, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
+import storage from 'redux-persist/lib/storage'
 import Navigator from './navigator'
 import { watcherSaga } from "./saga";
 import repos from './redux/repos'

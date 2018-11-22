@@ -1,11 +1,8 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, Image, View, Linking, WebView} from 'react-native';
+import {Linking, WebView} from 'react-native';
 
 
-
-
-
-class Web extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class Web extends React.Component {
   render() {
     const uri = this.props.navigation.state.params.url
     return (

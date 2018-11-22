@@ -16,8 +16,7 @@ class Home extends React.Component { // eslint-disable-line react/prefer-statele
 
   state = {
     selected: (new Map(): Map<string, boolean>),
-    searchError: false,
-    searchText:''
+    searchError: false
   };
 
   _onCheckItem = (id: string) => {
@@ -47,13 +46,11 @@ class Home extends React.Component { // eslint-disable-line react/prefer-statele
     if (!text) return
     if (text != text.toLowerCase()) {
       this.setState({searchError: true})
-      return
     } else {
-      this.setState({searchError: false, searchText: text})
+      this.setState({searchError: false})
+      this.props.loadRepos(text)
     }
 
-    this.props.loadRepos(text)
-    
   }
 
   handleMoveToList = () => {
@@ -70,10 +67,9 @@ class Home extends React.Component { // eslint-disable-line react/prefer-statele
           <Item >
             <Icon name="ios-search" />
             <Input 
-              placeholder="Search" 
+              placeholder="Search"
               onChangeText={(text) => this.handleSearch(text)}  
               autoCapitalize = 'none'
-              value={this.state.searchText}
             />
           <ActivityIndicator size="large" color="#0000ff" animating={repos.loading}/>
           </Item>
@@ -90,6 +86,7 @@ class Home extends React.Component { // eslint-disable-line react/prefer-statele
             data={repos.data}
             keyExtractor={item => item.id.toString()}
             extraData={this.state}
+            removeClippedSubviews={true}
             renderItem={({item: item}) => (
               <RepoItem
                 key={item.id}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StackNavigator, addNavigationHelpers } from 'react-navigation'
-import { View, Text } from "react-native";
+import { StackNavigator } from 'react-navigation'
 import Home  from './containers/Home'
 import List  from './containers/List'
 import Web  from './containers/Web'
@@ -15,16 +14,15 @@ export const Navigator =  new StackNavigator({
 })
 
 class Nav extends Component {
-    render() {
-      return (
-        <Navigator  />
-      )
-    }
+  render() {
+    return (
+      <Navigator  />
+    )
   }
-  
-  const mapStateToProps = state => ({
-    navigation: state.navigation,
-  })
-  
-  export default connect(mapStateToProps)(Nav)
-      
+}
+
+const mapStateToProps = state => ({
+  navigation: state.navigation,
+})
+
+export default connect(mapStateToProps)(Nav)
