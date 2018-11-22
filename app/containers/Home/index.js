@@ -37,7 +37,7 @@ class Home extends React.Component { // eslint-disable-line react/prefer-statele
     let stars = 0
     selected.forEach( (val, key) => {
       const [repo] = repos.data.filter(r => r.id == key)
-      stars += repo.stargazers_count
+      stars += (repo ||{}).stargazers_count || 0
     })
     return stars
   }
